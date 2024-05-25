@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    .container {
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 1000px; /* Increased width */
+    width: 100%;
+    margin: 0 auto; /* Center the container */
+    }
+
+    h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+    }
+
+    .user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    }
+
+    .user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    }
+
+    .user-item:hover {
+    background-color: #f1f1f1;
+    }
+
+    .user-name {
+    flex-grow: 1;
+    font-size: 18px;
+    }
+
+    .user-name a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    transition: color 0.3s;
+    }
+
+    .user-name a:hover {
+    color: #0056b3;
+    }
+
+    .button-group {
+    display: flex;
+    gap: 10px;
+    }
+
+    .button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #007BFF; /* Button background color */
+    color: #fff; /* Button text color */
+    }
+
+    .button:hover {
+    background-color: #0056b3; /* Button background color on hover */
+    }
+
+    .primary-button {
+    background-color: #6e8efb;
+    color: white;
+    }
+
+    .primary-button:hover {
+    background-color: #5a7dd4;
+    }
+
+    .delete-button {
+    background-color: #dc3545;
+    color: white;
+    }
+
+    .delete-button:hover {
+    background-color: #c82333;
+    }
+
+    .pagination {
+    text-align: center;
+    margin-top: 20px;
+    }
+
+    .pagination .step-links {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    }
+
+    .pagination a,
+    .pagination span {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007BFF;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a {
+    background-color: #f9f9f9;
+    }
+
+    .pagination a:hover {
+    background-color: #ddd;
+    }
+
+    .pagination .current {
+    font-weight: bold;
+    background-color: #007BFF;
+    color: white;
+    border: 1px solid #007BFF;
+    }
+
+    .pagination .disabled {
+    color: #ccc;
+    pointer-events: none;
+    }
+
+    .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    min-height: 100vh;
+    padding: 50px 20px; /* Add padding for breathing space */
+    background: linear-gradient(135deg, #a8edea, #fed6e3); /* Gradient background */
+    width: 90%; /* Increased width */
+    max-width: 800px; /* Max width to prevent excessive stretching */
+    margin: 0 auto; /* Center the wrapper */
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper">
+        <div class="container">
+            <h1>Artist List</h1>
+            <ul class="user-list">
+                {% for name, artist_id in users %}
+                    <li class="user-item">
+                        <span class="user-name">
+                            <a href="/artist/{{ artist_id }}">{{ name }}</a>
+                        </span>
+                        <div class="button-group">
+                            <a href='/artist/modify/{{ artist_id }}/'>
+                                <button type="button" class="button primary-button">Modify</button>
+                            </a>
+                            <form action="/artist/delete/{{ artist_id }}/" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="button delete-button">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% else %}
+                        <span class="disabled">previous</span>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% else %}
+                        <span class="disabled">next</span>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

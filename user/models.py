@@ -5,10 +5,9 @@ from .manager import UserManager
 
 
 class GenderEnum(Enum):
-    MALE = "Male"
-    FEMALE = "Female"
-    OTHER = "Other"
-    PREFER_NOT_TO_SAY = "Prefer not to say"
+    MALE = "M"
+    FEMALE = "F"
+    OTHER = "O"
 
 
 class User(AbstractUser):
@@ -18,7 +17,7 @@ class User(AbstractUser):
     gender = models.CharField(
         max_length=20,
         choices=[(tag, tag.value) for tag in GenderEnum],
-        default=GenderEnum.PREFER_NOT_TO_SAY
+        default=GenderEnum.MALE
     )
     password = models.CharField(max_length=500, null=False)
     email = models.EmailField(max_length=255, null=False, unique=True)

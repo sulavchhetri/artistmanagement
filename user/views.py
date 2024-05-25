@@ -1,4 +1,3 @@
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect
 from datetime import datetime
@@ -22,7 +21,8 @@ class ViewUsers(APIView):
         page_obj = paginator.get_page(page_number)
         user_details = [(user.first_name, user.last_name, user.id) for user in users]
         user_details = user_details[(page_number - 1) * 5:5 * page_number]
-        return render(request, 'user/users.html', {'users': user_details, 'page_obj': page_obj})
+        return render(request, 'user/users.html',
+                      {'users': user_details, 'page_obj': page_obj, 'active_user': request.user.is_authenticated})
 
 
 class ModifyUser(APIView):
@@ -36,6 +36,8 @@ class ModifyUser(APIView):
             'address': user.address,
             'dob': user.dob.strftime('%Y-%m-%d'),
             'gender': user.gender,
+            'modify': True,
+            'active_user': request.user.is_authenticated
         }
         return render(request, 'user/register.html', context)
 
@@ -86,7 +88,19 @@ class ViewUser(APIView):
             return redirect('/user/login/')
         user = User.objects.filter(id=pk).first()
         if user:
-            return render(request, 'user/user.html', {'user': user})
+            context = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'phone': user.phone,
+                'address': user.address,
+                'dob': user.dob.strftime('%Y-%m-%d'),
+                'gender': user.gender,
+                'updated_at': user.updated_at.strftime('%Y-%m-%d'),
+                'created_at': user.created_at.strftime('%Y-%m-%d'),
+                'active_user': request.user.is_authenticated
+            }
+            return render(request, 'user/user.html', context=context)
 
 
 def validate_credentials(email, password, dob):
@@ -128,7 +142,7 @@ class RegisterView(APIView):
         return redirect('/user/login/')
 
     def get(self, request):
-        return render(request, 'user/register.html')
+        return render(request, 'user/register.html', context={'active_user': request.user.is_authenticated})
 
 
 class LoginView(APIView):
@@ -152,7 +166,6 @@ class LoginView(APIView):
 
 def logout_view(request):
     logout(request)
-    print('logged out')
     return redirect('/')
 
 

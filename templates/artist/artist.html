@@ -41,14 +41,14 @@
 
 {% block content %}
     <div id="container">
-        <h1>User Details</h1>
+        <h1>Artist Details</h1>
         <div class="user-details">
-            <h2>{{ first_name }} {{ last_name }}</h2>
+            <h2>{{ name }}</h2>
             <p><label>Gender:</label> {{ gender }}</p>
             <p><label>Date of Birth:</label> {{ dob }}</p>
-            <p><label>Email:</label> {{ email }}</p>
-            <p><label>Phone:</label> {{ phone }}</p>
             <p><label>Address:</label> {{ address }}</p>
+            <p><label>First Released Year:</label> {{ first_released_year }}</p>
+            <p><label>No. of Albums Released:</label> {{ no_of_albums_released }}</p>
             <p><label>Created At:</label> {{ created_at }}</p>
             <p><label>Updated At:</label> {{ updated_at }}</p>
         </div>

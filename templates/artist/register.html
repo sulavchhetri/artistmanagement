@@ -87,35 +87,17 @@
 
 {% block content %}
 
-    <form method="POST" action="{% url 'user_register' %}">
+    <form method="POST">
         {% csrf_token %}
         <div class="form-box">
             <div class="login-container" id="register">
                 <div class="top">
-                    <header>Register</header>
+                    <header>Register Artist</header>
                 </div>
-                <div class="two-forms">
-                    <div class="input-box">
-                        <input type="text" class="input-field" placeholder="First Name" name="first_name"
-                               value="{{ first_name }}" required>
-                        <i class="bx bx-user"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Last Name" name="last_name"
-                               value="{{ last_name }}" required>
-                        <i class="bx bx-user"></i>
-                    </div>
-                </div>
-                <div class="two-forms">
-                    <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Email Address" name="email"
-                               value="{{ email }}" required>
-                        <i class="bx bx-user"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" class="input-field" placeholder="Password" name="password" required>
-                        <i class="bx bx-lock-alt"></i>
-                    </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Name" name="name"
+                           value="{{ name }}" required>
+                    <i class="bx bx-user"></i>
                 </div>
                 <div class="input-box">
                     <div class="form-group">
@@ -127,19 +109,25 @@
                         <i class="bx bx-body"></i>
                     </div>
                 </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Address" name="address"
+                           value="{{ address }}" required>
+                    <i class="bx bx-location-plus"></i>
+                </div>
+
                 <div class="two-forms">
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Phone Number" name="phone"
-                               value="{{ phone }}" required>
-                        <i class="bx bx-phone"></i>
+                        <input type="text" class="input-field" placeholder="First Released Year"
+                               name="first_release_year"
+                               value="{{ first_release_year }}" required>
+                        <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Address" name="address"
-                               value="{{ address }}" required>
-                        <i class="bx bx-location-plus"></i>
+                        <input type="text" class="input-field" placeholder="No of albums released"
+                               name="no_of_albums_released" value="{{ no_of_albums_released }}" required>
+                        <i class="bx bx-lock-alt"></i>
                     </div>
                 </div>
-                <!-- New input box for date of birth -->
                 <div class="two-forms" id="dob">
                     <div class="input-box" style="position: relative;">
                         <input type="date" class="input-field" placeholder="Date of Birth" name="dob" value="{{ dob }}"
