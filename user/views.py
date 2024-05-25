@@ -1,29 +1,109 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from user.models import User
-from user.serializers import UserSerializer
 from rest_framework.exceptions import AuthenticationFailed
+from django.shortcuts import render, redirect
+from datetime import datetime
+from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth.hashers import check_password
+from django.core.paginator import Paginator
+
+User = get_user_model()
+
+
+class ViewUser(APIView):
+    def get(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
+        user = User.objects.filter(id=pk).first()
+        if user:
+            return render(request, 'user/user.html', {'user': user})
+
+
+class ViewUsers(APIView):
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
+        users = User.objects.all().order_by('created_at')
+        paginator = Paginator(users, 5)  # Show 5 users per page
+        try:
+            page_number = int(request.GET.get('page'))
+        except Exception as e:
+            page_number = 1
+        page_obj = paginator.get_page(page_number)
+        user_details = [(user.first_name, user.last_name, user.id) for user in users]
+        user_details = user_details[(page_number - 1) * 5:5 * page_number]
+        return render(request, 'user/display_user.html', {'users': user_details, 'page_obj': page_obj})
+
+
+def validate_credentials(email, password, dob):
+    if '@' not in email or '.' not in email:
+        return False, "Invalid Email Address"
+    user = User.objects.filter(email=email)
+    if user:
+        return False, "Email address already exists"
+    if len(password) < 6:
+        return False, "Password should be at least 6 characters long"
+    if password.isalpha():
+        return False, "Password must contain at least one number"
+    try:
+        dob = datetime.strptime(dob, '%Y-%m-%d').date()
+        if dob > datetime.now().date():
+            return False, "Enter correct date of birth"
+    except Exception as e:
+        return False, "Enter correct date of birth"
+    return True, ""
 
 
 class RegisterView(APIView):
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=200)
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        gender = request.POST['gender']
+        password = request.POST['password']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        dob = request.POST['dob']
+        address = request.POST['address']
 
-        return Response(serializer.errors, status=400)
+        # Validation
+        validated, message = validate_credentials(email=email, password=password, dob=dob)
+        user = User.objects.create_superuser(email=email, password=password, first_name=first_name, last_name=last_name,
+                                             phone=phone, address=address, dob=dob, gender=gender)
+        user.save()
+        return redirect('/user/login/')
+
+    def get(self, request):
+        return render(request, 'user/register.html')
 
 
 class LoginView(APIView):
     def post(self, request):
-        pass
-        # email = request.data['email']
-        # password = request.data['password']
-        # user = User.objects.filter(email=email).first()
-        # if user is not None and user.check_password(password):
-        # return Response({'error': 'wrong password'}, status=400)
+        email, password = request.POST['email'], request.POST['password']
+        user = User.objects.filter(email=email).first()
+        if user:
+            if not check_password(password=password, encoded=user.password):
+                user = None
+        if user:
+            login(request, user)
+            return redirect('/')
+
+        return render(request, 'user/login.html', {'error': 'Invalid email or password!'})
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('/')
+        return render(request, 'user/login.html')
 
 
-class LogoutView(APIView):
-    pass
+def logout_view(request):
+    logout(request)
+    print('logged out')
+    return redirect('/')
+
+
+class DashboardView(APIView):
+    def get(self, request):
+        authenticated = request.user.is_authenticated
+        user = request.user.email.split("@")[0] if authenticated else None
+        return render(request, 'dashboard.html', {'active_user': authenticated, 'user': user})

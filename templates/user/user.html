@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .user-details {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .user-details h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .user-details p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .user-details label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Details</h1>
+    <div class="user-details">
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p><label>Gender:</label> {{ user.gender }}</p>
+        <p><label>Email:</label> {{ user.email }}</p>
+        <p><label>Phone:</label> {{ user.phone }}</p>
+        <p><label>Address:</label> {{ user.address }}</p>
+    </div>
+</body>
+</html>
