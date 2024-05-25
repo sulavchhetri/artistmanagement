@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>ArtistManagement</title>
+    <style>
+        /* POPPINS FONT */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            overflow: hidden;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 110vh;
+            background: rgba(39, 39, 39, 0.4);
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            height: 100px;
+            line-height: 100px;
+            background: linear-gradient(rgba(39, 39, 39, 0.6), transparent);
+            z-index: 100;
+        }
+
+        .nav-logo p {
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .nav-menu ul {
+            display: flex;
+        }
+
+        .nav-menu ul li {
+            list-style-type: none;
+        }
+
+        .nav-menu ul li .link {
+            text-decoration: none;
+            font-weight: 500;
+            color: #fff;
+            padding-bottom: 15px;
+            margin: 0 25px;
+        }
+
+        .link:hover, .active {
+            border-bottom: 2px solid #fff;
+        }
+
+        .nav-button .btn {
+            width: 130px;
+            height: 40px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.4);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #registerBtn {
+            margin-left: 15px;
+        }
+
+        .btn.white-btn {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn.btn.white-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-menu-btn {
+            display: none;
+        }
+
+        {% block css %}
+        {% endblock %}
+
+
+        .top span {
+            color: #fff;
+            font-size: small;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .top span a {
+            font-weight: 500;
+            color: #fff;
+            margin-left: 5px;
+        }
+
+        header {
+            color: #fff;
+            font-size: 30px;
+            text-align: center;
+            padding: 10px 0 30px 0;
+        }
+
+
+        ::-webkit-input-placeholder {
+            color: #fff;
+        }
+
+        .input-box i {
+            position: relative;
+            top: -35px;
+            left: 17px;
+            color: #fff;
+        }
+
+
+        .two label a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .two label a:hover {
+            text-decoration: underline;
+        }
+
+        @media only screen and (max-width: 786px) {
+            .nav-button {
+                display: none;
+            }
+
+            .nav-menu.responsive {
+                top: 100px;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: -800px;
+                display: flex;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.2);
+                width: 100%;
+                height: 90vh;
+                backdrop-filter: blur(20px);
+                transition: .3s;
+            }
+
+            .nav-menu ul {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-menu-btn {
+                display: block;
+            }
+
+            .nav-menu-btn i {
+                font-size: 25px;
+                color: #fff;
+                padding: 10px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                cursor: pointer;
+                transition: .3s;
+            }
+
+            .nav-menu-btn i:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        select {
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            height: 50px;
+            width: 100%;
+            padding: 0 10px 0 45px;
+            border: none;
+            border-radius: 30px;
+            outline: none;
+            transition: .2s ease;
+        }
+
+        option {
+            color: black;
+            font-weight: 500;
+            margin-top: 10px;
+            display: block;
+        }
+
+        @media only screen and (max-width: 540px) {
+            .wrapper {
+                min-height: 100vh;
+            }
+
+            .register-container .two-forms {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <nav class="nav">
+        <div class="nav-logo">
+            <p>CLOCO .</p>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <ul>
+                <li><a href="{% url 'dashboard' %}" class="link">Dashboard</a></li>
+                <li><a href="{% url 'user_all' %}" class="link">View Users</a></li>
+                <li><a href="{% url 'user_register' %}" class="link">Create User</a></li>
+            </ul>
+        </div>
+        {% if active_user %}
+            <div class="nav-button">
+                <a href="{% url 'user_logout' %}">
+                    <button class="btn white-btn" id="loginBtn">Sign Out</button>
+                </a>
+            </div>
+        {% else %}
+            <div class="nav-button">
+                <a href="{% url 'user_login' %}">
+                    <button class="btn white-btn" id="loginBtn">Sign In</button>
+                </a>
+                <a href="{% url 'user_register' %}">
+                    <button class="btn white-btn" id="registerBtn">Sign Up</button>
+                </a>
+            </div>
+        {% endif %}
+        <div class="nav-menu-btn">
+            <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+        </div>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+
+</body>
+</html>

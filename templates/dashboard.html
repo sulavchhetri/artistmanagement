@@ -1,83 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+{% extends 'base.html' %}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f8f9fa;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+{% block css %}
+    .form-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 512px;
+    height: 420px;
+    overflow: hidden;
+    z-index: 2;
+    }
 
-        .header h1 {
-            margin: 0;
-            font-size: 1.5em;
-        }
+    .login-container {
+    position: absolute;
+    left: 4px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    transition: .5s ease-in-out;
+    }
 
-        .header .button-group {
-            display: flex;
-            align-items: center;
-        }
+    .input-field {
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    transition: .2s ease;
+    cursor: pointer;
+    }
 
-        .header .button-group a {
-            text-decoration: none;
-            margin-left: 10px;
-        }
+    .input-field:hover,
+    .input-field:focus {
+    background: rgba(255, 255, 255, 0.25);
+    }
 
-        .header .button {
-            background-color: #6e8efb;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
+    .submit {
+    font-size: 16px; /* Increased font size */
+    font-weight: 500;
+    color: black;
+    height: 45px;
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    }
 
-        .header .button:hover {
-            background-color: #5a7dd4;
-        }
+    .submit:hover {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+    }
 
-        .content {
-            flex: 1;
-            padding: 20px;
-        }
-    </style>
-</head>
-<body>
-<div class="header">
-    <h1>Dashboard</h1>
+    .header {
+    color: #333; /* Changed color */
+    font-size: 28px; /* Increased font size */
+    text-align: center;
+    margin-bottom: 20px;
+    }
 
-    <div class="button-group">
-        {% if active_user %}
-            <a href="{% url 'user_all' %}">
-                <button type="button" class="button">View Users</button>
-            </a>
-            <a href="{% url 'user_register' %}">
-                <button type="button" class="button">Create User</button>
-            </a>
-            <a href="{% url 'user_logout' %}">
-                <button type="submit" class="button">Logout</button>
-            </a>
-        {% else %}
-            <a href="{% url 'user_login' %}">
-                <button type="submit" class="button">Login</button>
-            </a>
-        {% endif %}
+    #container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center horizontally */
+    text-align: center;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 1000px; /* Increased width */
+    height: 300px;
+    width: 100%;
+    }
+
+    #artist {
+    padding-bottom: 40px;
+    font-weight: 700;
+    font-size: 30px; /* Increased font size */
+    color: #333; /* Changed color */
+    }
+
+    .new {
+    font-weight: 500;
+    }
+
+{% endblock %}
+
+{% block content %}
+    <div id="container">
+        <p id="artist">Artist Detail</p>
+        <div class="nav-menu" id="artist_list">
+            <ul>
+                <li><a href="{% url 'artist_all' %}" class="link">View Artists</a></li>
+                <li><a href="{% url 'artist_register' %}" class="link">Create Artist</a></li>
+            </ul>
+        </div>
     </div>
-</div>
-</body>
-</html>
+{% endblock %}

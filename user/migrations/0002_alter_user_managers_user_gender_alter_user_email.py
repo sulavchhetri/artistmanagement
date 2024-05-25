@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('user', '0001_initial'),
     ]
@@ -21,7 +20,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='gender',
-            field=models.CharField(choices=[(user.models.GenderEnum['MALE'], 'Male'), (user.models.GenderEnum['FEMALE'], 'Female'), (user.models.GenderEnum['OTHER'], 'Other'), (user.models.GenderEnum['PREFER_NOT_TO_SAY'], 'Prefer not to say')], default=user.models.GenderEnum['PREFER_NOT_TO_SAY'], max_length=20),
+            field=models.CharField(
+                choices=[(user.models.GenderEnum['MALE'], 'M'), (user.models.GenderEnum['FEMALE'], 'F'),
+                         (user.models.GenderEnum['OTHER'], 'O')], default=user.models.GenderEnum['MALE'],
+                max_length=20),
         ),
         migrations.AlterField(
             model_name='user',
