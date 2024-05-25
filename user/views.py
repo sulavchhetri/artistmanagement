@@ -1,6 +1,5 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import AuthenticationFailed
 from django.shortcuts import render, redirect
 from datetime import datetime
 from django.contrib.auth import login, logout, get_user_model
@@ -10,17 +9,7 @@ from django.core.paginator import Paginator
 User = get_user_model()
 
 
-class ViewUser(APIView):
-    def get(self, request, pk=None):
-        if not request.user.is_authenticated:
-            return redirect('/user/login/')
-        user = User.objects.filter(id=pk).first()
-        if user:
-            return render(request, 'user/user.html', {'user': user})
-
-
 class ViewUsers(APIView):
-
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('/user/login/')
@@ -33,7 +22,71 @@ class ViewUsers(APIView):
         page_obj = paginator.get_page(page_number)
         user_details = [(user.first_name, user.last_name, user.id) for user in users]
         user_details = user_details[(page_number - 1) * 5:5 * page_number]
-        return render(request, 'user/display_user.html', {'users': user_details, 'page_obj': page_obj})
+        return render(request, 'user/users.html', {'users': user_details, 'page_obj': page_obj})
+
+
+class ModifyUser(APIView):
+    def get(self, request, pk=None):
+        user = User.objects.filter(id=pk).first()
+        context = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'phone': user.phone,
+            'address': user.address,
+            'dob': user.dob.strftime('%Y-%m-%d'),
+            'gender': user.gender,
+        }
+        return render(request, 'user/register.html', context)
+
+    def post(self, request, pk=None):
+        user = User.objects.filter(id=pk).first()
+
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        gender = request.POST.get('gender')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        dob = request.POST.get('dob')
+        dob = datetime.strptime(dob, '%Y-%m-%d').date()
+        address = request.POST.get('address')
+
+        # Validate the data
+        validated, message = validate_credentials(email=email, password=password, dob=dob)
+        # if not validated:
+        # messages.error(request, message)
+        # return redirect('user_modify', pk=user.id)
+
+        # Update user details
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        if password:
+            user.set_password(password)
+        user.phone = phone
+        user.address = address
+        user.dob = dob
+        user.gender = gender
+        user.save()
+        # messages.success(request, 'User details updated successfully.')
+        return redirect('/all/')
+
+
+class DeleteUser(APIView):
+    def post(self, request, pk=None):
+        user = User.objects.filter(id=pk).first()
+        user.delete()
+        return redirect('/all/')
+
+
+class ViewUser(APIView):
+    def get(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
+        user = User.objects.filter(id=pk).first()
+        if user:
+            return render(request, 'user/user.html', {'user': user})
 
 
 def validate_credentials(email, password, dob):
@@ -47,7 +100,6 @@ def validate_credentials(email, password, dob):
     if password.isalpha():
         return False, "Password must contain at least one number"
     try:
-        dob = datetime.strptime(dob, '%Y-%m-%d').date()
         if dob > datetime.now().date():
             return False, "Enter correct date of birth"
     except Exception as e:
@@ -64,6 +116,8 @@ class RegisterView(APIView):
         email = request.POST['email']
         phone = request.POST['phone']
         dob = request.POST['dob']
+        dob = datetime.strptime(dob, '%Y-%m-%d').date()
+
         address = request.POST['address']
 
         # Validation

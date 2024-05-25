@@ -55,6 +55,18 @@
             flex: 1;
             padding: 20px;
         }
+
+        .content h2 {
+            margin-bottom: 10px;
+        }
+
+        .content a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -63,21 +75,29 @@
 
     <div class="button-group">
         {% if active_user %}
-            <a href="{% url 'user_all' %}">
-                <button type="button" class="button">View Users</button>
-            </a>
             <a href="{% url 'user_register' %}">
                 <button type="button" class="button">Create User</button>
             </a>
+            <a href="{% url 'user_all' %}">
+                <button type="button" class="button">View Users</button>
+            </a>
             <a href="{% url 'user_logout' %}">
-                <button type="submit" class="button">Logout</button>
+                <button type="button" class="button">Logout</button>
             </a>
         {% else %}
             <a href="{% url 'user_login' %}">
-                <button type="submit" class="button">Login</button>
+                <button type="button" class="button">Login</button>
             </a>
         {% endif %}
     </div>
 </div>
+
+<div class="content">
+    <h2>Artists</h2>
+    <a href="#">View All Artists</a>
+    <a href="#">Add Artist</a>
+    <a href="#">Modify Artists</a>
+</div>
+
 </body>
 </html>
