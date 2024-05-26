@@ -7,6 +7,8 @@ from django.db import connection
 
 class RegisterView(APIView):
     def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         name = request.POST.get('name')
         dob = request.POST.get('dob')
         if datetime.strptime(dob, '%Y-%m-%d').date() > datetime.now().date():
@@ -76,6 +78,8 @@ class ViewArtists(APIView):
 
 class DeleteArtist(APIView):
     def post(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         delete_music_query = """
                     DELETE FROM artist_Music
                     WHERE artist_id = %s
@@ -94,6 +98,8 @@ class DeleteArtist(APIView):
 
 class ModifyArtist(APIView):
     def get(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         artist = None
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM artist_Artist WHERE id = %s LIMIT 1', [pk])
@@ -115,6 +121,8 @@ class ModifyArtist(APIView):
             return render(request, 'artist/register.html', context)
 
     def post(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         name = request.POST.get('name')
         dob = request.POST.get('dob')
         if datetime.strptime(dob, '%Y-%m-%d').date() > datetime.now().date():
@@ -159,6 +167,8 @@ class ViewSongs(APIView):
 
 class AddSong(APIView):
     def post(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         title = request.POST.get('title')
         album_name = request.POST.get('album_name')
         genre = request.POST.get('genre')
@@ -205,6 +215,8 @@ class ViewSong(APIView):
 
 class DeleteSong(APIView):
     def post(self, request, pk=None, song_id=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         sql_query = """
                 DELETE FROM artist_Music
                 WHERE id = %s
@@ -218,6 +230,8 @@ class DeleteSong(APIView):
 
 class ModifySong(APIView):
     def get(self, request, pk=None, song_id=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM artist_Music WHERE id = %s LIMIT 1', [song_id])
             music = cursor.fetchone()
@@ -233,6 +247,8 @@ class ModifySong(APIView):
             return render(request, 'songs/register.html', context)
 
     def post(self, request, pk=None, song_id=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         title = request.POST.get('title')
         album_name = request.POST.get('album_name')
         genre = request.POST.get('genre')

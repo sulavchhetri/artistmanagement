@@ -32,6 +32,8 @@ class ViewUsers(APIView):
 
 class ModifyUser(APIView):
     def get(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         with connection.cursor() as cursor:
             cursor.execute(f"SELECT * from user_User where id={pk}")
             user = cursor.fetchone()
@@ -51,6 +53,8 @@ class ModifyUser(APIView):
             return render(request, 'user/register.html', context)
 
     def post(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         user = User.objects.get(id=pk)
         password = request.POST.get('password')
         email = request.POST.get('email')
@@ -77,6 +81,8 @@ class ModifyUser(APIView):
 
 class DeleteUser(APIView):
     def post(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return redirect('/user/login/')
         user = User.objects.filter(id=pk).first()
         user.delete()
         return redirect('/all/')
