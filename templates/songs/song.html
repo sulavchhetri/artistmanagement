@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    .user-details {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f9fa; /* Light blue background */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-details h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    }
+
+    .user-details p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #333;
+    }
+
+    .user-details label {
+    font-weight: bold;
+    color: #333;
+    }
+
+    #container {
+    display :flex;
+    flex-direction: column;
+    justify-content: center;
+    }
+
+    h1 {
+    text-align: center;}
+{% endblock %}
+
+{% block content %}
+    <div id="container">
+        <h1>Song Details</h1>
+        <div class="user-details">
+            <h2>{{ title }} ({{ artist_name }})</h2>
+            <p><label>Genre:</label> {{ genre }}</p>
+            <p><label>Album Name:</label> {{ album_name }}</p>
+            <p><label>Created At:</label> {{ created_at }}</p>
+            <p><label>Updated At:</label> {{ updated_at }}</p>
+        </div>
+    </div>
+{% endblock %}

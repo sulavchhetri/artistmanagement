@@ -7,7 +7,7 @@
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f8f9fa; /* Light blue background */
+    background-color: #f8f9fa;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
@@ -29,28 +29,177 @@
     color: #333;
     }
 
-    #container {
-    display :flex;
-    flex-direction: column;
-    justify-content: center;
+    h1 {
+    text-align: center;
     }
 
-    h1 {
-    text-align: center;}
+    .songs_container {
+    max-width: 300px;
+    height: 330px;
+    margin-top: 110px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    }
+
+    .song {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    }
+
+    .song:last-child {
+    border-bottom: none;
+    }
+
+    .song-actions {
+    display: flex;
+    gap: 10px;
+    }
+
+    .song-actions button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    .song-actions .edit-button {
+    background-color: #ffc107;
+    color: #fff;
+    }
+
+    .song-actions .delete-button {
+    background-color: #dc3545;
+    color: #fff;
+    }
+
+    .add-song-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    }
+
+    .add-song-form input,
+    .add-song-form select,
+    .add-song-form button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    }
+
+    .add-song-form button {
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    }
+
+    #containers {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    }
+    #container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center horizontally */
+    text-align: center;
+    border-radius: 10px;
+    padding: 40px;
+    }
+
+    #song {
+    padding-bottom: 40px;
+    font-weight: 700;
+    font-size: 30px; /* Increased font size */
+    color: #333; /* Changed color */
+    }
+
+
+
+    .nav-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    }
+
+    .nav-menu li {
+    margin-bottom: 10px;
+    }
+
+    #create_song, #view_song {
+    display: block;
+    margin-top : 40px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    text-align: center;
+    font-size: 16px;
+    }
+
+    .nav-menu a:hover {
+    background-color: #0056b3;
+    }
+
+    .nav-menu #view_song {
+    background-color: #007bff;
+    }
+
+    .nav-menu #create_song {
+    background-color: #28a745;
+    }
+
+    .nav-menu #view_song:hover {
+    background-color: #0056b3;
+    }
+
+    .nav-menu #create_song:hover {
+    background-color: #218838;
+    }
+
+
 {% endblock %}
 
 {% block content %}
-    <div id="container">
-        <h1>Artist Details</h1>
-        <div class="user-details">
-            <h2>{{ name }}</h2>
-            <p><label>Gender:</label> {{ gender }}</p>
-            <p><label>Date of Birth:</label> {{ dob }}</p>
-            <p><label>Address:</label> {{ address }}</p>
-            <p><label>First Released Year:</label> {{ first_released_year }}</p>
-            <p><label>No. of Albums Released:</label> {{ no_of_albums_released }}</p>
-            <p><label>Created At:</label> {{ created_at }}</p>
-            <p><label>Updated At:</label> {{ updated_at }}</p>
+    <div id="containers">
+        <div id="container"><h1>Artist Details</h1>
+            <div class="user-details">
+                <h2>{{ name }}</h2>
+                <p><label>Gender:</label> {{ gender }}</p>
+                <p><label>Date of Birth:</label> {{ dob }}</p>
+                <p><label>Address:</label> {{ address }}</p>
+                <p><label>First Released Year:</label> {{ first_released_year }}</p>
+                <p><label>No. of Albums Released:</label> {{ no_of_albums_released }}</p>
+                <p><label>Created At:</label> {{ created_at }}</p>
+                <p><label>Updated At:</label> {{ updated_at }}</p>
+            </div>
+        </div>
+
+        <div class="songs_container">
+            <div>
+                <h2>Song Detail</h2>
+                <div class="nav-menu" id="songs_list">
+                    <ul>
+                        <li><a id="view_song" href="{% url 'view_songs' pk=id %}" class="link">View Songs</a></li>
+                        <li><a id="create_song" href="{% url 'add_song' pk=id %}" class="link">Create Song</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

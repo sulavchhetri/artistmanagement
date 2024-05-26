@@ -137,34 +137,32 @@
     .wrapper {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align items to the top */
+    align-items: flex-start;
     min-height: 100vh;
-    padding: 50px 20px; /* Add padding for breathing space */
-    background: linear-gradient(135deg, #a8edea, #fed6e3); /* Gradient background */
-    width: 90%; /* Increased width */
-    max-width: 800px; /* Max width to prevent excessive stretching */
-    margin: 0 auto; /* Center the wrapper */
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
     }
 {% endblock %}
 
 {% block content %}
     <div class="wrapper">
         <div class="container">
-            <h1>Artist List</h1>
+            <h1>Songs</h1>
             <ul class="user-list">
-                {% for name, artist_id in users %}
+                {% for name, song_id, artist_id in users %}
                     <li class="user-item">
                         <span class="user-name">
-                            <a href="/artist/{{ artist_id }}">{{ name }}</a>
+                            <a href="{% url 'view_song' pk=artist_id song_id=song_id %}">{{ name }}</a>
                         </span>
                         <div class="button-group">
-                            <a href='/artist/{{ artist_id }}/songs/'>
-                                <button type="button" class="button primary-button">View Songs</button>
-                            </a>
-                            <a href='/artist/modify/{{ artist_id }}/'>
+                            <a href="{% url 'modify_song' song_id=song_id pk=artist_id %}">
                                 <button type="button" class="button primary-button">Modify</button>
                             </a>
-                            <form action="/artist/delete/{{ artist_id }}/" method="post" style="display: inline;">
+                            <form action="{% url 'delete_song' song_id=song_id pk=artist_id %}" method="post"
+                                  style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="button delete-button">Delete</button>
                             </form>

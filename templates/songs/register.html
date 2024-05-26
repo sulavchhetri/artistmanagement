@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    .form-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 512px;
+    height: 600px; /* Increased height to accommodate new input */
+    overflow: hidden;
+    z-index: 2;
+    }
+
+    .two-forms {
+    display: flex;
+    gap: 10px;
+    }
+
+    .input-field {
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    padding: 0 10px 0 45px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    transition: .2s ease;
+    }
+
+    .input-field:hover, .input-field:focus {
+    background: rgba(255, 255, 255, 0.25);
+    }
+
+    .submit {
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
+    height: 45px;
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    }
+
+    .submit:hover {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .two-col {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    font-size: small;
+    margin-top: 10px;
+    }
+
+    .two-col .one {
+    display: flex;
+    gap: 5px;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    }
+
+    .dob-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 12px; /* Adjust the font size to be small like an icon */
+    font-weight: bold; /* Adjust the font weight for better visibility */
+    color: rgba(255, 255, 255, 0.7); /* Adjust the color for better contrast */
+    }
+
+    #dob {
+    padding-bottom : 15px}
+{% endblock %}
+
+
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-box">
+            <div class="login-container" id="register">
+                <div class="top">
+                    <header>Add a New Song</header>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Title" name="title"
+                           value="{{ title }}" required>
+                    <i class="bx bx-text"></i>
+                </div>
+                <div class="input-box">
+                    <div class="form-group">
+                        <select id="genre" name="genre">
+                            <option value="RHYTHM_AND_BLUES" {% if genre == "rnb" %}selected{% endif %}>Rhythm and Blues</option>
+                            <option value="COUNTRY" {% if genre == "country" %}selected{% endif %}>Country</option>
+                            <option value="CLASSIC" {% if genre == "classic" %}selected{% endif %}>Classic</option>
+                            <option value="ROCK" {% if genre == "rock" %}selected{% endif %}>Rock</option>
+                            <option value="JAZZ" {% if genre == "jazz" %}selected{% endif %}>Jazz</option>
+                        </select>
+                        <i class="bx bx-label"></i>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Album Name" name="album_name"
+                           value="{{ album_name }}" required>
+                    <i class="bx bx-album"></i>
+                </div>
+                <div class="input-box">
+                    {% if modify %}
+                        <input type="submit" class="submit" value="Update">
+                    {% else %}
+                        <input type="submit" class="submit" value="Create">
+                    {% endif %}
+                </div>
+                {% if error %}
+                    <div id="error" class="error">{{ error }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+
+    <script>
+        setTimeout(function () {
+            var errorDiv = document.getElementById('error');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
+        }, 3000);
+    </script>
+
+{% endblock %}
