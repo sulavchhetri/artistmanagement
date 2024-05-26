@@ -5,9 +5,9 @@
     border-radius: 10px;
     padding: 40px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    max-width: 1000px; /* Increased width */
+    max-width: 1000px;
     width: 100%;
-    margin: 0 auto; /* Center the container */
+    margin: 0 auto;
     }
 
     h1 {
@@ -67,12 +67,12 @@
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s, color 0.3s;
-    background-color: #007BFF; /* Button background color */
+    background-color: #007BFF;
     color: #fff; /* Button text color */
     }
 
     .button:hover {
-    background-color: #0056b3; /* Button background color on hover */
+    background-color: #0056b3;
     }
 
     .primary-button {
@@ -137,13 +137,13 @@
     .wrapper {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align items to the top */
+    align-items: flex-start;
     min-height: 100vh;
-    padding: 50px 20px; /* Add padding for breathing space */
-    background: linear-gradient(135deg, #a8edea, #fed6e3); /* Gradient background */
-    width: 90%; /* Increased width */
-    max-width: 800px; /* Max width to prevent excessive stretching */
-    margin: 0 auto; /* Center the wrapper */
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
     }
 {% endblock %}
 
@@ -155,16 +155,17 @@
                 {% for name, artist_id in users %}
                     <li class="user-item">
                         <span class="user-name">
-                            <a href="/artist/{{ artist_id }}">{{ name }}</a>
+                            <a href="{% url 'artist_view' pk=artist_id %}">{{ name }}</a>
                         </span>
                         <div class="button-group">
-                            <a href='/artist/{{ artist_id }}/songs/'>
+                            <a href="{% url 'view_songs' pk=artist_id %}">
                                 <button type="button" class="button primary-button">View Songs</button>
                             </a>
-                            <a href='/artist/modify/{{ artist_id }}/'>
+                            <a href="{% url 'artist_modify' pk=artist_id %}">
                                 <button type="button" class="button primary-button">Modify</button>
                             </a>
-                            <form action="/artist/delete/{{ artist_id }}/" method="post" style="display: inline;">
+                            <form action="{% url 'artist_delete' pk=artist_id %}" method="post"
+                                  style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="button delete-button">Delete</button>
                             </form>

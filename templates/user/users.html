@@ -2,148 +2,153 @@
 
 {% block css %}
     .container {
-        border-radius: 10px;
-        padding: 40px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        max-width: 1000px; /* Increased width */
-        width: 100%;
-        margin: 0 auto; /* Center the container */
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
     }
 
     h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 30px;
-        font-size: 32px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
     }
 
     .user-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
     }
 
     .user-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #f9f9f9;
-        padding: 15px 20px;
-        margin: 10px 0;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
     }
 
     .user-item:hover {
-        background-color: #f1f1f1;
+    background-color: #f1f1f1;
     }
 
     .user-name {
-        flex-grow: 1;
-        font-size: 18px;
+    flex-grow: 1;
+    font-size: 18px;
     }
 
     .user-name a {
-        text-decoration: none;
-        color: #007BFF;
-        font-weight: bold;
-        transition: color 0.3s;
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    transition: color 0.3s;
     }
 
     .user-name a:hover {
-        color: #0056b3;
+    color: #0056b3;
     }
 
     .button-group {
-        display: flex;
-        gap: 10px;
+    display: flex;
+    gap: 10px;
     }
 
     .button {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.3s, color 0.3s;
-        background-color: #007BFF; /* Button background color */
-        color: #fff; /* Button text color */
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #007BFF;
+    color: #fff;
     }
 
     .button:hover {
-        background-color: #0056b3; /* Button background color on hover */
+    background-color: #0056b3;
     }
 
     .primary-button {
-        background-color: #6e8efb;
-        color: white;
+    background-color: #6e8efb;
+    color: white;
     }
 
     .primary-button:hover {
-        background-color: #5a7dd4;
+    background-color: #5a7dd4;
     }
 
     .delete-button {
-        background-color: #dc3545;
-        color: white;
+    background-color: #dc3545;
+    color: white;
     }
 
     .delete-button:hover {
-        background-color: #c82333;
+    background-color: #c82333;
     }
 
     .pagination {
-        text-align: center;
-        margin-top: 20px;
+    text-align: center;
+    margin-top: 20px;
     }
 
     .pagination .step-links {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
     }
 
     .pagination a,
     .pagination span {
-        padding: 8px 16px;
-        text-decoration: none;
-        color: #007BFF;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        transition: background-color 0.3s, color 0.3s;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007BFF;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
     }
 
     .pagination a {
-        background-color: #f9f9f9;
+    background-color: #f9f9f9;
     }
 
     .pagination a:hover {
-        background-color: #ddd;
+    background-color: #ddd;
     }
 
     .pagination .current {
-        font-weight: bold;
-        background-color: #007BFF;
-        color: white;
-        border: 1px solid #007BFF;
+    font-weight: bold;
+    background-color: #007BFF;
+    color: white;
+    border: 1px solid #007BFF;
     }
 
     .pagination .disabled {
-        color: #ccc;
-        pointer-events: none;
+    color: #ccc;
+    pointer-events: none;
     }
 
     .wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* Align items to the top */
-        min-height: 100vh;
-        padding: 50px 20px; /* Add padding for breathing space */
-        background: linear-gradient(135deg, #a8edea, #fed6e3); /* Gradient background */
-        width: 90%; /* Increased width */
-        max-width: 800px; /* Max width to prevent excessive stretching */
-        margin: 0 auto; /* Center the wrapper */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    }
+    #active_user:hover {
+    border-bottom: 3px solid red;
+    transition: None;
+    color: red;
     }
 {% endblock %}
 
@@ -152,16 +157,20 @@
         <div class="container">
             <h1>User List</h1>
             <ul class="user-list">
-                {% for first_name, last_name, user_id in users %}
+                {% for first_name, last_name, user_id,email in users %}
                     <li class="user-item">
                         <span class="user-name">
-                            <a href="/user/{{ user_id }}">{{ first_name }} {{ last_name }}</a>
+                            <a href="{% url 'user_view' pk=user_id %}"
+                               id="{% if active_email == email %}active_user{% endif %}">{{ first_name }} {{ last_name }}</a>
                         </span>
                         <div class="button-group">
-                            <a href='/user/modify/{{ user_id }}/'>
+                            {% if active_email == email %}
+                                <button type="button" class="button primary-button">You</button>
+                            {% endif %}
+                            <a href="{% url 'user_modify' pk=user_id %}">
                                 <button type="button" class="button primary-button">Modify</button>
                             </a>
-                            <form action="/user/delete/{{ user_id }}/" method="post" style="display: inline;">
+                            <form action="{% url 'user_delete' pk=user_id %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="button delete-button">Delete</button>
                             </form>

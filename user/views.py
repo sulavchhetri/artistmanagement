@@ -4,6 +4,7 @@ from datetime import datetime
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.hashers import check_password
 from django.core.paginator import Paginator
+from django.db import connection
 
 User = get_user_model()
 
@@ -12,66 +13,65 @@ class ViewUsers(APIView):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('/user/login/')
-        users = User.objects.all().order_by('created_at')
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * from user_User order by created_at asc")
+            users = cursor.fetchall()
+
         paginator = Paginator(users, 5)  # Show 5 users per page
         try:
             page_number = int(request.GET.get('page'))
         except Exception as e:
             page_number = 1
         page_obj = paginator.get_page(page_number)
-        user_details = [(user.first_name, user.last_name, user.id) for user in users]
+        user_details = [(user[6], user[7], user[5], user[-1]) for user in users]
         user_details = user_details[(page_number - 1) * 5:5 * page_number]
         return render(request, 'user/users.html',
-                      {'users': user_details, 'page_obj': page_obj, 'active_user': request.user.is_authenticated})
+                      {'users': user_details, 'page_obj': page_obj, 'active_user': request.user.is_authenticated,
+                       'active_email': request.user.email})
 
 
 class ModifyUser(APIView):
     def get(self, request, pk=None):
-        user = User.objects.filter(id=pk).first()
-        context = {
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email,
-            'phone': user.phone,
-            'address': user.address,
-            'dob': user.dob.strftime('%Y-%m-%d'),
-            'gender': user.gender,
-            'modify': True,
-            'active_user': request.user.is_authenticated
-        }
-        return render(request, 'user/register.html', context)
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT * from user_User where id={pk}")
+            user = cursor.fetchone()
+        if user:
+            _, _, _, _, _, user_id, first_name, last_name, _, phone, dob, address, created_at, updated_at, gender, email = user
+            context = {
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'phone': phone,
+                'address': address,
+                'dob': dob.strftime('%Y-%m-%d'),
+                'gender': gender,
+                'modify': True,
+                'active_user': request.user.is_authenticated
+            }
+            return render(request, 'user/register.html', context)
 
     def post(self, request, pk=None):
-        user = User.objects.filter(id=pk).first()
-
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        gender = request.POST.get('gender')
+        user = User.objects.get(id=pk)
         password = request.POST.get('password')
         email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        dob = request.POST.get('dob')
-        dob = datetime.strptime(dob, '%Y-%m-%d').date()
-        address = request.POST.get('address')
+        dob = datetime.strptime(request.POST.get('dob'), '%Y-%m-%d').date()
 
         # Validate the data
-        validated, message = validate_credentials(email=email, password=password, dob=dob)
-        # if not validated:
-        # messages.error(request, message)
-        # return redirect('user_modify', pk=user.id)
-
+        validated, message = validate_credentials(email=email, password=password, dob=dob, check_email=False)
+        if not validated:
+            return render(request, 'user/register.html', context={'error': message})
         # Update user details
-        user.first_name = first_name
-        user.last_name = last_name
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
         user.email = email
         if password:
             user.set_password(password)
-        user.phone = phone
-        user.address = address
+        user.phone = request.POST.get('phone')
+        user.address = request.POST.get('address')
         user.dob = dob
-        user.gender = gender
+        user.gender = request.POST.get('gender')
+        user.updated_at = datetime.now()
         user.save()
-        # messages.success(request, 'User details updated successfully.')
         return redirect('/all/')
 
 
@@ -86,29 +86,34 @@ class ViewUser(APIView):
     def get(self, request, pk=None):
         if not request.user.is_authenticated:
             return redirect('/user/login/')
-        user = User.objects.filter(id=pk).first()
+
+        with connection.cursor() as cursor:
+            cursor.execute(f"SELECT * from user_User where id={pk}")
+            user = cursor.fetchone()
         if user:
+            _, _, _, _, _, user_id, first_name, last_name, _, phone, dob, address, created_at, updated_at, gender, email = user
             context = {
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email,
-                'phone': user.phone,
-                'address': user.address,
-                'dob': user.dob.strftime('%Y-%m-%d'),
-                'gender': user.gender,
-                'updated_at': user.updated_at.strftime('%Y-%m-%d'),
-                'created_at': user.created_at.strftime('%Y-%m-%d'),
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'phone': phone,
+                'address': address,
+                'dob': dob.strftime('%Y-%m-%d'),
+                'gender': gender,
+                'updated_at': updated_at.strftime('%Y-%m-%d'),
+                'created_at': created_at.strftime('%Y-%m-%d'),
                 'active_user': request.user.is_authenticated
             }
             return render(request, 'user/user.html', context=context)
 
 
-def validate_credentials(email, password, dob):
+def validate_credentials(email, password, dob, check_email=False):
     if '@' not in email or '.' not in email:
         return False, "Invalid Email Address"
     user = User.objects.filter(email=email)
-    if user:
-        return False, "Email address already exists"
+    if check_email:
+        if user:
+            return False, "Email address already exists"
     if len(password) < 6:
         return False, "Password should be at least 6 characters long"
     if password.isalpha():
@@ -131,11 +136,14 @@ class RegisterView(APIView):
         phone = request.POST['phone']
         dob = request.POST['dob']
         dob = datetime.strptime(dob, '%Y-%m-%d').date()
-
         address = request.POST['address']
 
         # Validation
-        validated, message = validate_credentials(email=email, password=password, dob=dob)
+        validated, message = validate_credentials(email=email, password=password, dob=dob, check_email=True)
+
+        if not validated:
+            return render(request, 'user/register.html',
+                          context={'error': message, 'active_user': request.user.is_authenticated})
         user = User.objects.create_superuser(email=email, password=password, first_name=first_name, last_name=last_name,
                                              phone=phone, address=address, dob=dob, gender=gender)
         user.save()

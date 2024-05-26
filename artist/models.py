@@ -22,7 +22,7 @@ class Artist(models.Model):
     dob = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=20,
-        choices=[(tag, tag.value) for tag in GenderEnum],
+        choices=[(tag.value, tag) for tag in GenderEnum],
         default=GenderEnum.MALE
     )
     address = models.CharField(max_length=255)
@@ -40,7 +40,7 @@ class Music(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     album_name = models.CharField(max_length=50)
-    genre = models.CharField(max_length=20, choices=[(tag, tag.value) for tag in GenreEnum])
+    genre = models.CharField(max_length=20, choices=[(tag.value, tag) for tag in GenreEnum])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

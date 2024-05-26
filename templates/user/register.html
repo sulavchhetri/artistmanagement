@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     width: 512px;
-    height: 600px; /* Increased height to accommodate new input */
+    height: 600px;
     overflow: hidden;
     z-index: 2;
     }
@@ -75,9 +75,9 @@
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
-    font-size: 12px; /* Adjust the font size to be small like an icon */
-    font-weight: bold; /* Adjust the font weight for better visibility */
-    color: rgba(255, 255, 255, 0.7); /* Adjust the color for better contrast */
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
     }
 
     #dob {
@@ -87,7 +87,7 @@
 
 {% block content %}
 
-    <form method="POST" action="{% url 'user_register' %}">
+    <form method="POST">
         {% csrf_token %}
         <div class="form-box">
             <div class="login-container" id="register">
@@ -120,9 +120,9 @@
                 <div class="input-box">
                     <div class="form-group">
                         <select id="gender" name="gender">
-                            <option value="Male" {% if gender == "M" %}selected{% endif %}>Male</option>
-                            <option value="Female" {% if gender == "F" %}selected{% endif %}>Female</option>
-                            <option value="Other" {% if gender == "O" %}selected{% endif %}>Other</option>
+                            <option value="M" {% if gender == "M" %}selected{% endif %}>Male</option>
+                            <option value="F" {% if gender == "F" %}selected{% endif %}>Female</option>
+                            <option value="O" {% if gender == "O" %}selected{% endif %}>Other</option>
                         </select>
                         <i class="bx bx-body"></i>
                     </div>

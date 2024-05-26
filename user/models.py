@@ -16,7 +16,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=255)
     gender = models.CharField(
         max_length=20,
-        choices=[(tag, tag.value) for tag in GenderEnum],
+        choices=[(tag.value, tag) for tag in GenderEnum],
         default=GenderEnum.MALE
     )
     password = models.CharField(max_length=500, null=False)

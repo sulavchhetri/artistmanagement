@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     width: 512px;
-    height: 600px; /* Increased height to accommodate new input */
+    height: 600px;
     overflow: hidden;
     z-index: 2;
     }
@@ -75,13 +75,14 @@
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
-    font-size: 12px; /* Adjust the font size to be small like an icon */
-    font-weight: bold; /* Adjust the font weight for better visibility */
-    color: rgba(255, 255, 255, 0.7); /* Adjust the color for better contrast */
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
     }
 
     #dob {
-    padding-bottom : 15px}
+    padding-bottom : 15px
+    }
 {% endblock %}
 
 
@@ -102,11 +103,11 @@
                 <div class="input-box">
                     <div class="form-group">
                         <select id="genre" name="genre">
-                            <option value="RHYTHM_AND_BLUES" {% if genre == "rnb" %}selected{% endif %}>Rhythm and Blues</option>
-                            <option value="COUNTRY" {% if genre == "country" %}selected{% endif %}>Country</option>
-                            <option value="CLASSIC" {% if genre == "classic" %}selected{% endif %}>Classic</option>
-                            <option value="ROCK" {% if genre == "rock" %}selected{% endif %}>Rock</option>
-                            <option value="JAZZ" {% if genre == "jazz" %}selected{% endif %}>Jazz</option>
+                            <option value="rnb" {% if genre == "rnb" %}selected{% endif %}>Rhythm and Blues</option>
+                            <option value="country" {% if genre == "country" %}selected{% endif %}>Country</option>
+                            <option value="classic" {% if genre == "classic" %}selected{% endif %}>Classic</option>
+                            <option value="rock" {% if genre == "rock" %}selected{% endif %}>Rock</option>
+                            <option value="jazz" {% if genre == "jazz" %}selected{% endif %}>Jazz</option>
                         </select>
                         <i class="bx bx-label"></i>
                     </div>

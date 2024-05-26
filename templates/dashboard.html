@@ -41,7 +41,7 @@
     }
 
     .submit {
-    font-size: 16px; /* Increased font size */
+    font-size: 16px;
     font-weight: 500;
     color: black;
     height: 45px;
@@ -60,8 +60,8 @@
     }
 
     .header {
-    color: #333; /* Changed color */
-    font-size: 28px; /* Increased font size */
+    color: #333;
+    font-size: 28px;
     text-align: center;
     margin-bottom: 20px;
     }
@@ -70,37 +70,51 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Center horizontally */
+    align-items: center;
     text-align: center;
     border-radius: 10px;
     padding: 40px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    max-width: 1000px; /* Increased width */
+    max-width: 1000px;
     height: 300px;
     width: 100%;
+    position: relative;
     }
 
     #artist {
     padding-bottom: 40px;
     font-weight: 700;
-    font-size: 30px; /* Increased font size */
-    color: #333; /* Changed color */
+    font-size: 30px;
+    color: #333;
     }
 
     .new {
     font-weight: 500;
     }
 
+    .welcome-text {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-weight: 600;
+    font-size: 22px;
+    color: #333;
+    }
+
 {% endblock %}
 
 {% block content %}
-    <div id="container">
-        <p id="artist">Artist Detail</p>
-        <div class="nav-menu" id="artist_list">
-            <ul>
-                <li><a href="{% url 'artist_all' %}" class="link">View Artists</a></li>
-                <li><a href="{% url 'artist_register' %}" class="link">Create Artist</a></li>
-            </ul>
+
+    {% if active_user %}
+        <div id="container">
+            <div class="welcome-text">Welcome, {{ user }}</div>
+            <p id="artist">Artist Detail</p>
+            <div class="nav-menu" id="artist_list">
+                <ul>
+                    <li><a href="{% url 'artist_all' %}" class="link">View Artists</a></li>
+                    <li><a href="{% url 'artist_register' %}" class="link">Create Artist</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
